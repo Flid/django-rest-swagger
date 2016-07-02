@@ -4,37 +4,9 @@ import rest_framework_swagger as rfs
 from .compat import import_string
 from formencode.api import NoDefault
 
-_version_resolver = None
-
 
 def get_class_form_args(method, view_class, version):
-    global _version_resolver
-
-    if rfs.SWAGGER_SETTINGS['version_resolver'] == \
-            rfs.DEFAULT_SWAGGER_SETTINGS['version_resolver']:
-        return []
-
-    if not _version_resolver:
-        resolver_dotted_name = rfs.SWAGGER_SETTINGS['version_resolver']
-        if not resolver_dotted_name:
-            return []
-
-        _version_resolver = import_string(resolver_dotted_name)
-
-    _version_resolver.current_version = version
-
-    params = []
-    form_classes = view_class.form_classes.get(method.upper())
-
-    if not isinstance(form_classes, list):
-        form_classes = [form_classes]
-
-    forms = [_version_resolver.get_form(version, f) for f in form_classes]
-
-    for form in forms:
-        params += _process_form(form)
-
-    return params
+    return _process_form(view_class.form_class)
 
 
 
@@ -117,7 +89,7 @@ def _process_form(form):
             b'description': _get_field_description(field),
             b'required': field.if_missing is NoDefault,
             b'type': _get_field_type(field),
-            b'paramType': b'query' if form.source == b'GET' else b'form',
+            b'paramType': b'query',
         }
 
         default_value = _get_default_value(field)

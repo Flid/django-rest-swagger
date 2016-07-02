@@ -20,13 +20,11 @@
             <div id="header" style="background-color: #375a6a;">
                 <div class="swagger-ui-wrap">
                     {% block branding %}
-                        <a href="http://wazoku.com"><img src="{{STATIC_URL}}public_api/images/logo_small.png"></a>
+                        <img height="70" width="200" src="http://www.knijff.com/markmatters/wp-content/uploads/2013/02/Punma-Pumba.png">
                     {% endblock %}
                     {% block api_selector %}
                         <form id="api_selector" style="padding-top:20px;">
                             <div class="input" style="display: none;"><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
-                            <div class="input"><input placeholder="customer_token:user_id" id="input_apiKey" name="apiKey" type="text"/></div>
-                            <div class="input"><a id="explore" href="#">Explore</a></div>
                         </form>
                     {% endblock %}
                 </div>
@@ -34,22 +32,6 @@
         {% endblock %}
 
         {% block django_rest_swagger %}
-            <div id="django-rest-swagger" style="background-color: #9FD1D4;">
-                <div class="swagger-ui-wrap">
-                    Versions:
-                    {% for ver in available_versions %}
-                        {% if ver.is_current %}
-                            <span>{{ver.version}}</span>
-                        {% else %}
-                            <a href="{{ver.link}}">{{ver.version}}</a>
-                        {% endif %}
-                        {% if not forloop.last %}
-                            |
-                        {% endif %}
-
-                    {% endfor %}
-                </div>
-            </div>
         {% endblock %}
 
         <div id="message-bar" class="swagger-ui-wrap"></div>
